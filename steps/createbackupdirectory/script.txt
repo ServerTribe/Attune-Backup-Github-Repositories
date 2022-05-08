@@ -1,0 +1,21 @@
+# Declare Variables
+backupDirectory={backupDirectory}{githubUser}/
+
+echo "Checking if '$backupDirectory' exists..."
+if [ ! -d $backupDirectory ]
+then
+    echo "Directory does not exist, creating the backup directory..."
+    mkdir -p $backupDirectory
+    if [ -d $backupDirectory ]
+    then
+        echo "Directory created successfully."
+    else
+        echo "Directory failed to be created."
+        exit 2
+    fi
+else
+    echo "Directory exists."
+    echo "============================"
+    echo "Printing directory contents: "
+    ls -ltrh $backupDirectory
+fi

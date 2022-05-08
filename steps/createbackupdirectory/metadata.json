@@ -1,0 +1,10 @@
+{
+    "enabled": true, 
+    "interpreter": 1, 
+    "key": "createbackupdirectory", 
+    "name": "Create backup directory", 
+    "osCredKey": "backupuser", 
+    "serverKey": "backupnode", 
+    "successExitCode": 0, 
+    "type": "com.servertribe.attune.tuples.StepSshTuple"
+}

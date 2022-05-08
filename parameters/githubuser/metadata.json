@@ -1,0 +1,6 @@
+{
+    "key": "githubuser", 
+    "name": "github User", 
+    "showInPlan": true, 
+    "type": "c.s.s.b.phv.Text"
+}

@@ -1,0 +1,18 @@
+{
+    "concurrency": 1, 
+    "enabled": true, 
+    "isBlueprint": true, 
+    "key": "githubrepositorybackups", 
+    "links": [
+        {
+            "order": 0, 
+            "stepKey": "createbackupdirectory"
+        }, 
+        {
+            "order": 50, 
+            "stepKey": "backupgituserrepositories"
+        }
+    ], 
+    "name": "GitHub Repository Backups", 
+    "type": "com.servertribe.attune.tuples.StepGroupTuple"
+}

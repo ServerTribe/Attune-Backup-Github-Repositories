@@ -1,0 +1,43 @@
+# Declare Variables
+githubUser={githubUser}
+backupDirectory={backupDirectory}$githubUser/
+gitRepoCloneUri=(`curl --silent \
+    https://api.github.com/users/$githubUser/repos | \
+    sed -n -e 's/.*clone_url": "//p' | \
+    sed -n -e 's/",//p'`)
+gitRepoName=(`curl --silent \
+    https://api.github.com/users/$githubUser/repos | \
+    grep -v "MIT License" | \
+    sed -n -e 's/.*"name": "//p' | \
+    sed -n -e 's/",//p'`)
+gitRepoSize=(`curl --silent \
+    https://api.github.com/users/$githubUser/repos | \
+    sed -n -e 's/.*"size": //p' | \
+    sed -n -e 's/,//p'`)
+
+# debugging
+# echo ${gitRepoCloneUri[@]}
+# echo ${gitRepoName[@]}
+# echo ${gitRepoSize[@]}
+
+for i in ${!gitRepoCloneUri[@]};
+do
+    cd $backupDirectory
+
+    if [ ! -d ${gitRepoName[$i]} ]
+    then
+        echo "Cloning '${gitRepoCloneUri[$i]}'"
+        git clone ${gitRepoCloneUri[$i]}
+    else
+        if [ ${gitRepoSize[$i]} != '0' ]
+        then
+            echo "Fetching '${gitRepoCloneUri[$i]}'"
+            cd "${gitRepoName[$i]}"
+            git fetch
+            git diff
+            git pull
+        else
+            echo "GIT Repo is empty."
+        fi
+    fi
+done

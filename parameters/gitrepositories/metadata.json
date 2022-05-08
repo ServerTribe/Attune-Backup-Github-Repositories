@@ -1,0 +1,6 @@
+{
+    "key": "gitrepositories", 
+    "name": "Git Repositories", 
+    "showInPlan": true, 
+    "type": "c.s.s.b.phv.ServerList"
+}
