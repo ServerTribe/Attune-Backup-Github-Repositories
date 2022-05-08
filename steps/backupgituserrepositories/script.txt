@@ -1,38 +1,47 @@
 # Declare Variables
 githubUser={githubUser}
 backupDirectory={backupDirectory}$githubUser/
-gitRepoCloneUri=(`curl --silent \
+
+# Get the Repository clone url
+gitRepoCloneUrl=(`curl --silent \
     https://api.github.com/users/$githubUser/repos | \
     sed -n -e 's/.*clone_url": "//p' | \
     sed -n -e 's/",//p'`)
+    
+# Get the Repository name for the directory name.
 gitRepoName=(`curl --silent \
     https://api.github.com/users/$githubUser/repos | \
     grep -v "MIT License" | \
     sed -n -e 's/.*"name": "//p' | \
     sed -n -e 's/",//p'`)
+    
+# Get the Repository size to determine the Repository isn't empty.
 gitRepoSize=(`curl --silent \
     https://api.github.com/users/$githubUser/repos | \
     sed -n -e 's/.*"size": //p' | \
     sed -n -e 's/,//p'`)
 
 # debugging
-# echo ${gitRepoCloneUri[@]}
+# echo ${gitRepoCloneUrl[@]}
 # echo ${gitRepoName[@]}
 # echo ${gitRepoSize[@]}
 
-for i in ${!gitRepoCloneUri[@]};
+# loop through the users repositories.
+for i in ${!gitRepoCloneUrl[@]};
 do
     cd $backupDirectory
 
+    # check if the repository has been cloned.
     if [ ! -d ${gitRepoName[$i]} ]
     then
-        echo "Cloning '${gitRepoCloneUri[$i]}'"
-        git clone ${gitRepoCloneUri[$i]}
+        echo "Cloning '${gitRepoCloneUrl[$i]}'"
+        git clone ${gitRepoCloneUrl[$i]}
     else
+        # fetch repositories.
         if [ ${gitRepoSize[$i]} != '0' ]
         then
-            echo "Fetching '${gitRepoCloneUri[$i]}'"
             cd "${gitRepoName[$i]}"
+            echo "Fetching '${gitRepoCloneUrl[$i]}'"
             git fetch
             git diff
             git pull
